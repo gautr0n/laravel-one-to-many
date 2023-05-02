@@ -28,9 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('/projects/{project:slug}/restore', [ProjectController::class, 'restore'])->name('projects.restore')->withTrashed();
     Route::resource('projects', ProjectController::class)->parameters([
         'projects' => 'project:slug'
-    ]);
+    ])->withTrashed();
 });
 
 require __DIR__.'/auth.php';

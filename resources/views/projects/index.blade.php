@@ -22,7 +22,7 @@
                     <th>slug</th>
                     <th>data creazione</th>
                     <th>data modifica</th>
-                    <th></th>
+                    <th>eliminato</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,8 +38,22 @@
                         <td>{{ $project->created_at }}</td>
                         <td>{{ $project->updated_at }}</td>
                         <td>
+                            {{ $project->trashed() ? $project->deleted_at : '' }}
+                        </td>
+                        <td>
                             <div class="d-flex">
                                 <a class="btn btn-sm btn-secondary" href="{{ route('projects.edit', $project) }}">Edit</a>
+                                <form action="{{ route('projects.destroy', $project) }}" method="POST">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <input type="submit" class="btn btn-sm btn-danger" value="Elimina">
+                                </form>
+                                @if ($project->trashed())
+                                <form action="{{ route('projects.restore', $project) }}" method="POST">
+                                    @csrf 
+                                    <input type="submit" value="Ripristina" class="btn btn-sm btn-success">
+                                </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
