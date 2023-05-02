@@ -4,7 +4,7 @@
         <h1>Nuovo Progetto</h1>
     </div>
     <div class="container">
-        <form action="{{ route('projects.store') }}" method="POST">
+        <form action="{{ route('projects.update', $project) }}" method="POST">
             @csrf 
             @method('PUT')
             <div class="mb-3">

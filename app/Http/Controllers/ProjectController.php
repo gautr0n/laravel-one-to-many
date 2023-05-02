@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProjectController extends Controller
@@ -14,11 +15,19 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::withTrashed()->get();
+        $trashed = $request->input('trashed');
 
-        return view('projects.index', compact('projects'));
+        if ($trashed) {
+            $projects = Project::onlyTrashed()->get();
+        }else {
+            $projects = Project::all();
+        }
+
+        $num_of_trashed = Project::onlyTrashed()->count();
+
+        return view('projects.index', compact('projects', 'num_of_trashed'));
     }
 
     /**
@@ -85,10 +94,11 @@ class ProjectController extends Controller
         return to_route('projects.show', $project);
     }
 
-    public function restore(Project $project)
+    public function restore(Project $project, Request $request)
     {
         if($project->trashed()) {
             $project->restore();
+            $request->session()->flash('message', 'il progetto è stato ripristinato');
         }
         return back();
     }
@@ -100,7 +110,11 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
-        return to_route('projects.index');
+        if ($project->trashed()) {
+            $project->forceDelete();
+        } else {
+            $project->delete();
+        }
+        return back();
     }
 }

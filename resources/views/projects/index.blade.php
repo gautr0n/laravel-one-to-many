@@ -1,12 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (request()->session()->exists('message'))
+    <div class="alert fixed alert-primary" role="alert">
+        {{ request()->session()->pull('message') }}
+    </div>
+    @endif
+
     <div class="container py-5">
         <div class="d-flex alig-items-center">
             <h1 class="me-auto">Tutti i progetti</h1>
 
             <div>
+                @if (request('trashed'))
+                    <a class="btn btn-sm btn-light" href="{{ route('projects.index') }}">Tutti i progetti</a>
+                @else
+                    <a class="btn btn-sm btn-light" href="{{ route('projects.index', ['trashed' => true]) }}">Cestino ({{ $num_of_trashed }})</a>
+                @endif
                 <a class="btn btn-sm btn-primary" href="{{ route('projects.create') }}">Nuovo Progetto</a>
+                
             </div>
         </div>
     </div>
@@ -32,13 +44,13 @@
                         <td>
                             <a href="{{ route('projects.show', $project) }}">{{ $project->title }}</a>
                         </td>
-                        <td>{{ $project->descriptiom }}</td>
+                        <td>{{ $project->description }}</td>
                         <td>{{ $project->website_link}}</td>
                         <td>{{ $project->slug }}</td>
-                        <td>{{ $project->created_at }}</td>
-                        <td>{{ $project->updated_at }}</td>
+                        <td>{{ $project->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $project->updated_at->format('d/m/Y') }}</td>
                         <td>
-                            {{ $project->trashed() ? $project->deleted_at : '' }}
+                            {{ $project->trashed() ? $project->deleted_at->format('d/m/Y H:i') : '' }}
                         </td>
                         <td>
                             <div class="d-flex">

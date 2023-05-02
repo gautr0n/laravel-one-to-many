@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects/{project:slug}/restore', [ProjectController::class, 'restore'])->name('projects.restore')->withTrashed();
     Route::resource('projects', ProjectController::class)->parameters([
         'projects' => 'project:slug'
-    ])->withTrashed();
+    ])->withTrashed(['show', 'edit', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';
