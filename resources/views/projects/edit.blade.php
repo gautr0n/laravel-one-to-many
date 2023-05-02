@@ -19,13 +19,29 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="website_link" class="form_label">Link Sito</label>
-                <input type="text" name="website_link" class="form-control @error('website_link') is-invalid @enderror" value="{{ old('website_link', $project->website_link) }}" id="website_link" aria-describedby="titleHelp">
+                <label for="website_link" class="form_label">Tipo</label>
+                <select class="form-control @error('website_link') is-invalid @enderror"  type="text" name="website_link" value="{{ old('website_link', $project->website_link) }}" id="website_link" aria-describedby="titleHelp">
                 @error('website_link')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
+            </div>
+            <div class="mb-3">
+                <label for="type_id" class="form-label">Tipo</label>
+                <select class="form-select @error('type_id') is-invalid @enderror" id="type_id"  name="type_id" aria-label="Default select example">
+                    <option value="" selected>Selezione Categoria</option>
+                    @foreach ($types as $type)
+                        <option @selected(old('type_id', $project->type_id) == $type->id) value="{{ $type->id }}">{{ $type->name }}</option>
+                    @endforeach
+                </select>
+                @error('type_id')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <label for="description" class="form-label">Descrizione</label>
                 <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{old('description', $project->description)}}</textarea>
                 @error('description')

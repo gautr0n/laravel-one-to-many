@@ -31,6 +31,7 @@
                     <th>title</th>
                     <th>description</th>
                     <th>link</th>
+                    <th>type</th>
                     <th>slug</th>
                     <th>data creazione</th>
                     <th>data modifica</th>
@@ -72,7 +73,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <th colspan="8">nessun progetto trovato</th>
+                        <th colspan="9">nessun progetto trovato</th>
                     </tr>
                 @endforelse
             </tbody>

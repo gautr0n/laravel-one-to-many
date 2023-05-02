@@ -4,8 +4,15 @@
     <div class="container">
         <div class="d-flex align-items-center">
             <div class="me-auto">
-                <h1>{{ $project->title }}</h1>
+                <h1>{{ $project->title }}
+                    @if ($project->type)
+                        <span class="badge bg-secondary">{{ $project->type->name }}</span>
+                    @else
+                        <span class="badge bg-secondary">Nessuna Categoria</span>
+                    @endif
+                </h1>
                 <p>{{ $project->slug }}</p>
+                <p>Tipo: </p>
             </div>
 
 
@@ -25,5 +32,21 @@
         <p>
             {{ $project->description }}
         </p>
+    </div>
+    <div class="container">
+        <h3>Articoli correlati</h3>
+        @if ($project->type)
+            <ul>
+                @foreach ($project->type->projects as $related_project)
+                    <li>
+                        <a href="{{ route('projects.show', $related_project) }}">
+                            {{ $related_project->title}}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            Nessun articolo correlato
+        @endif
     </div>
 @endsection

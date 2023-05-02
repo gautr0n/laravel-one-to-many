@@ -31,7 +31,8 @@ class UpdateProjectRequest extends FormRequest
                 Rule::unique('projects', 'title')->ignore($this->project)
             ],
             'description' => 'nullable|string',
-            'website_link' => 'nullable|url'
+            'website_link' => 'nullable|url',
+            'type_id' => 'nullable|exists:types,id'
         ];
     }
 }

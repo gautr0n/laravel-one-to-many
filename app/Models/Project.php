@@ -14,6 +14,7 @@ class Project extends Model
         'description',
         'website_link',
         'slug',
+        'type_id',
     ];
 
     public function type()
